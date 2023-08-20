@@ -39,6 +39,8 @@ function love.load()
 
     ball = Ball(VIRTUAL_WIDTH / 2 - 4, VIRTUAL_HEIGHT - 50, 8, 8)
 
+    js = love.joystick.getJoysticks()[1]
+
     bricks = {}
 
     lives = 3
@@ -50,6 +52,10 @@ end
 
 function love.update(dt)
     paddle:update(dt)
+    
+    if joystick.isDown(js, 1, 8) then
+        change_game_state()
+    end
 
     if gameState == playState then
         ball:update(dt)
@@ -113,13 +119,7 @@ function love.keypressed(key)
     end
 
     if key == 'enter' or key == 'return' then
-        if gameState == startState then
-            gameState = serveState
-        elseif gameState == serveState then
-            gameState = playState
-        elseif gameState == winState or gameState == loseState then
-            resetGame()
-        end
+        change_game_state()
     end
 end
 
@@ -152,6 +152,16 @@ function love.draw()
 
     push:apply('end')
 
+end
+
+function change_game_state()
+    if gameState == startState then
+            gameState = serveState
+        elseif gameState == serveState then
+            gameState = playState
+        elseif gameState == winState or gameState == loseState then
+            resetGame()
+    end
 end
 
 function drawLives()

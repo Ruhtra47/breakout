@@ -7,12 +7,16 @@ function Paddle:init(x, y, width, height)
     self.height = height
 
     self.dx = 0
+
+    joystick = love.joystick.getJoysticks()[1]
 end
 
 function Paddle:update(dt)
-    if love.keyboard.isDown('d') or love.keyboard.isDown('right') then
+    leftx = joystick:getAxes()
+
+    if leftx > 0.25 or love.keyboard.isDown('d') or love.keyboard.isDown('right') then
         self.dx = PADDLE_SPEED
-    elseif love.keyboard.isDown('a') or love.keyboard.isDown('left') then
+    elseif leftx < -0.25 or love.keyboard.isDown('a') or love.keyboard.isDown('left') then
         self.dx = -PADDLE_SPEED
     else
         self.dx = 0
